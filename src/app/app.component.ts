@@ -8,7 +8,7 @@ import * as PlumbUi from '@jsplumb/browser-ui';
 import { EVENT_CONNECTION_CLICK } from '@jsplumb/browser-ui';
 import { BezierConnector } from '@jsplumb/connector-bezier';
 import { AnchorComputeParams, AnchorRecord } from '@jsplumb/core';
-import { IInitialNodeData } from './interfaces';
+import { IInitialNodeData, IWorkSpaceData } from './interfaces';
 import { SOURCE_END_POINT, STYLES, TARGET_END_POINT } from './plumb.data';
 import { generateWorkspaceData, saveData } from './plumb.helper';
 import { initialData } from './poc.data';
@@ -35,7 +35,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.init();
   }
-  save() {
+  public save(): void {
     const exsistingNodes = this.jsPlumbInstance.getManagedElements();
     const exsistingConnections = this.jsPlumbInstance.connections;
     const workspacedata = generateWorkspaceData(
@@ -43,6 +43,35 @@ export class AppComponent implements OnInit, AfterViewInit {
       exsistingNodes
     );
     saveData(workspacedata);
+  }
+
+  public load(): void {
+    let savedData!: IWorkSpaceData;
+    try {
+      savedData = JSON.parse(localStorage.getItem('workspace') as string);
+      if (!savedData) return;
+    } catch (error) {
+      alert(JSON.stringify(error));
+    }
+
+    const { nodes, connections } = savedData;
+    nodes.forEach((node) => {
+      const {
+        id,
+        position: { x, y },
+      } = node;
+      // based on inital data populate by id. This is going to change later
+      // and fetch nodes from rest api
+      const populatedNode = this.initalNodes.find(
+        (initalNode) => initalNode.id === id
+      );
+      this.insertItem(populatedNode!, x, y);
+    });
+    connections.forEach((connection) => {
+      const source = document.getElementById(connection.sourceId) as Element;
+      const target = document.getElementById(connection.targetId) as Element;
+      this.createConnection(source, target);
+    });
   }
 
   public dropItem(event: any) {
@@ -149,13 +178,11 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.jsPlumbInstance = PlumbUi.newInstance({
       container,
       connector: {
-        // connectorStyle: this.styles.connectorPaintStyle,
-        // connectorHoverStyle: this.styles.connectorPaintStyle,
         type: BezierConnector.type,
         options: {
           stub: 150,
           gap: 100,
-          curviness: 25,
+          curviness: 50,
           cornerRadius: 50,
           alwaysRespectStubs: true,
         },
@@ -192,7 +219,39 @@ export class AppComponent implements OnInit, AfterViewInit {
     // Attach Connections Based on load data.
   }
 
-  private createConnection() {
+  private createConnection(sourceElement: Element, targetElement: Element) {
+    this.jsPlumbInstance.connect({
+      source: sourceElement,
+      target: targetElement,
+      anchors: ['Right', 'Left'],
+
+      endpoint: 'Blank',
+      paintStyle: this.styles.connectorPaintStyle,
+      hoverPaintStyle: this.styles.connectorHoverStyle,
+
+      connector: {
+        type: BezierConnector.type,
+        options: {
+          stub: 150,
+          gap: 100,
+          curviness: 25,
+          cornerRadius: 50,
+          alwaysRespectStubs: true,
+        },
+      },
+      overlays: [
+        {
+          type: 'Arrow',
+          options: {
+            location: 1,
+            visible: true,
+            width: 8,
+            length: 8,
+            id: 'ARROW',
+          },
+        },
+      ],
+    });
     // const con = this.jsPlumbInstance.connect({
     //   data: {},
     //   source: sourceNode,

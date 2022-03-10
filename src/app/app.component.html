@@ -8,7 +8,7 @@
       </ul>
     </div>
     <div class="app-title">Js Plumb v5 - Community Edition</div>
-    <div class="actions"><button (click)="save()">Save</button><button (click)="save()"
+    <div class="actions"><button (click)="save()">Save</button><button (click)="load()"
         *ngIf="!storageIsEmpty">Load</button></div>
   </div>
   <div id="diagram" class="diag-container" (drop)="dropItem($event)" (dragover)="allowDrop($event)">

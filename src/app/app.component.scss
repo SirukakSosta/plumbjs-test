@@ -91,12 +91,6 @@
   }
 }
 
-.anch {
-  width: 10px;
-  height: 10px;
-  background-color: red;
-}
-
 .jtk-drag-active {
   &.left-anchor {
     opacity: 1;
@@ -119,12 +113,4 @@
 
 .jtk-connector {
   cursor: default;
-}
-
-.jtk-connector.active path {
-  animation-name: ring;
-  animation-duration: 2s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  stroke-dasharray: 5;
 }

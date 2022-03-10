@@ -10,7 +10,7 @@ export const STYLES = {
   },
   connectorHoverStyle: {
     // strokeWidth: 2,
-    stroke: '#216477',
+    stroke: '#90989f',
   },
   endpointStyle: {
     stroke: '#9e9e9e',
