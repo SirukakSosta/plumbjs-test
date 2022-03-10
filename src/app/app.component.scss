@@ -92,6 +92,26 @@
   background-color: red;
 }
 
+.jtk-drag-active {
+  &.left-anchor {
+    opacity: 1;
+
+    svg circle {
+      fill: rgb(0, 205, 234);
+      stroke: rgb(0, 205, 234);
+    }
+  }
+}
+
+.right-anchor {
+  z-index: 2;
+}
+
+.left-anchor {
+  transition: opacity 0.1s ease-in-out;
+  opacity: 0;
+}
+
 .jtk-connector {
   cursor: default;
 }

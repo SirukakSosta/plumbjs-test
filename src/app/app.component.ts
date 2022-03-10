@@ -119,16 +119,19 @@ export class AppComponent implements OnInit, AfterViewInit {
       {
         anchor: 'Right',
         meta: this.sourceEndpoint,
+        cssClass: 'right-anchor',
       },
       {
         anchor: 'Left',
         meta: this.targetEndpoint,
+        cssClass: 'left-anchor',
       },
     ];
 
     endpoints.forEach((endpoint) => {
       this.jsPlumbInstance.addEndpoint(element, {
         ...endpoint.meta,
+        cssClass: endpoint.cssClass,
         anchor: endpoint.anchor,
       });
     });
