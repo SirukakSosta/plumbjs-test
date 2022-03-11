@@ -49,23 +49,42 @@
 }
 
 .node {
-  width: 150px;
-  height: 25px;
-  border-radius: 0.25em;
   position: absolute;
-  background-color: #f1f0f0;
-  border: 1px solid #c8c8f9;
-  color: #1c597c;
-  cursor: pointer;
+  border: 1px solid #289de9;
+  width: 170px;
+  height: 34px;
+  line-height: 32px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: move;
+  box-sizing: border-box;
+  background: #fff;
+  // overflow: hidden;
   transition: border 0.3s ease-in-out;
+
+  .blue-line {
+    position: absolute;
+    top: 2px;
+    left: 3px;
+    border-radius: 2px;
+    padding: 14px 2px;
+    background: #1c9bec;
+  }
 
   &:hover {
     border: 1px solid #9898ef;
   }
 
   .node-container {
-    padding: 0.25em;
     position: relative;
+    display: flex;
+    align-items: center;
+
+    .node-icon {
+      padding: 0 1em;
+      color: #289de9;
+      opacity: 0.6;
+    }
 
     .close {
       opacity: 0;

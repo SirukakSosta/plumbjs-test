@@ -121,6 +121,12 @@ export class AppComponent implements OnInit, AfterViewInit {
     const innerNodeContainer = document.createElement('div');
     innerNodeContainer.classList.add('node-container');
 
+    const line = document.createElement('div');
+    line.classList.add('blue-line');
+
+    const icon = document.createElement('i');
+    icon.classList.add('node-icon', 'fa-solid', 'fa-share-nodes');
+
     const spanTitle = document.createElement('span');
     spanTitle.innerText = node.name;
 
@@ -130,9 +136,13 @@ export class AppComponent implements OnInit, AfterViewInit {
     closeDiv.addEventListener('click', () => {
       this.removeNode(node.id);
     });
+
     // click = "removeNode('ts-2')";
+    innerNodeContainer.appendChild(icon);
     innerNodeContainer.appendChild(spanTitle);
     innerNodeContainer.appendChild(closeDiv);
+
+    newNode.appendChild(line);
     newNode.appendChild(innerNodeContainer);
     return newNode;
   }
