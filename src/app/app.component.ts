@@ -10,7 +10,7 @@ import { BezierConnector } from '@jsplumb/connector-bezier';
 import { AnchorComputeParams, AnchorRecord } from '@jsplumb/core';
 import { IInitialNodeData, IWorkSpaceData } from './interfaces';
 import { SOURCE_END_POINT, STYLES, TARGET_END_POINT } from './plumb.data';
-import { generateWorkspaceData, saveData } from './plumb.helper';
+import { findHierarchy, generateWorkspaceData, saveData } from './plumb.helper';
 import { initialData } from './poc.data';
 
 @Component({
@@ -30,7 +30,9 @@ export class AppComponent implements OnInit, AfterViewInit {
   public get storageIsEmpty(): boolean {
     return !localStorage.getItem('workspace');
   }
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    findHierarchy();
+  }
 
   ngAfterViewInit(): void {
     this.init();
@@ -159,6 +161,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     endpoints.forEach((endpoint) => {
       this.jsPlumbInstance.addEndpoint(element, {
+        hoverPaintStyle: this.styles.connectorHoverStyle,
         ...endpoint.meta,
         cssClass: endpoint.cssClass,
         anchor: endpoint.anchor,
@@ -208,7 +211,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       },
     });
     this.jsPlumbInstance.bind('connection', (info) => {
-      console.log('new CONNECTION', info);
+      // console.log('new CONNECTION', info);
     });
     this.jsPlumbInstance.bind(EVENT_CONNECTION_CLICK, (p: any) => {
       console.log('Connection Clicked', p);
@@ -217,6 +220,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     // Generate a list of nodes
     // Generate target and source endpoints for each node
     // Attach Connections Based on load data.
+    this.load();
   }
 
   private createConnection(sourceElement: Element, targetElement: Element) {
